@@ -64,7 +64,7 @@ async function  getWeather() {
             
             drawWeather(data);
            
-            postData('/add', { temperature: data.main.temp, date: newDate, feelings: feelings.value });
+            postData('/add', { temperature: data.main.temp, date: newDate, content: feelings.value });
 
             return postData;
            

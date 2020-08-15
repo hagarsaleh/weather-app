@@ -59,9 +59,9 @@ app.post('/add', (req, res) => {
         temperature: req.body.temperature
 ,
 
-        date: req.body.newDate,
+        date: req.body.date,
 
-        feelings: req.body
+        feelings: req.body.content
 
     }
     
