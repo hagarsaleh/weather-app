@@ -1,4 +1,5 @@
-/* Global Variables */
+
+ // Global Variables 
 const button = document.getElementById('generate');
 //const zip = document.getElementById('zip').value;
 
@@ -13,27 +14,28 @@ const baseURL = 'https://api.openweathermap.org/data/2.5/weather?';
 
 
 
+// Async POST
+
 const postData = async (url = '', data = {}) => {
     console.log(data);
     const response = await fetch(url, {
-        method: 'GET',
+        method: 'POST',
+        credentials: 'same-origin',
         headers: {
-'Content - Type': 'application / json',
-},
-// Body data type must match “Content-Type” header
-body: JSON.stringify(data),
-});
+            'Content-Type': 'application/json',
+        },
+        // Body data type must match "Content-Type" header
+        body: JSON.stringify(data),
+    });
 
-try {
-    const newData = await response.json();
-    console.log(newData);
-    return newData;
-} catch (error) {
-    console.log("error", error);
+    try {
+        const newData = await response.json();
+        console.log(newData);
+        return newData;
+    } catch (error) {
+        console.log("error", error);
+    }
 }
-}
-postData('/add', { 'feelings': feelings.value });
-
 
 function drawWeather(d) { 
     let celcius = Math.round(parseFloat(d.main.temp) - 273.15);
@@ -42,33 +44,37 @@ function drawWeather(d) {
     document.getElementById('content').innerHTML = feelings.value;
     document.getElementById('temp').innerHTML = celcius + '&deg;';
     document.getElementById('date').innerHTML = newDate;
-    
+    return d;
     
 }
 function updateUI() {
      feelingsStyle.style.height= "155px";
 }
-let projectData = {};
+
 async function  getWeather() {
     let zipCode = document.getElementById('zip').value;
 
     const options = {
         method: 'POST'
         // Body data type must match "Content-Type" header        
-        ,body: JSON.stringify(projectData)
     };
-         await fetch(`https://api.openweathermap.org/data/2.5/weather?zip=${zipCode}&appid=${apiKey}`, options)
-        .then(function (resp) { return  resp.json() }) // Convert data to json
+    const res= await fetch(`https://api.openweathermap.org/data/2.5/weather?zip=${zipCode}&appid=${apiKey}`, options)
+        .then(function (res) { return res.json() }) // Convert data to json
         .then(function (data) {
-            //data = res;
-            console.log(data);
-            drawWeather(data); // Call drawWeather
+            
+            drawWeather(data);
+           
+            postData('/add', { temperature: data.main.temp, date: newDate, feelings: feelings.value });
 
-            //console.log(data);
-        }).then(updateUI)
+            return postData;
+           
+        })
+        
+ 
+        .then(updateUI)
         .catch(function () {
             // catch any errors
-        })
+        });
 
 }
 button.addEventListener('click', getWeather);

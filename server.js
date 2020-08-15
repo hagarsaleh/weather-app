@@ -1,5 +1,5 @@
 // Setup empty JS object to act as endpoint for all routes
-data = {};
+ newEntry = {};
 
 const key = '3320678975e3c9011dc0b7f13631e24f'
 // Require Express to run server and routes
@@ -25,24 +25,7 @@ origin: '*',
 app.use(express.static('website'));
 
 //function getFun() {
-/*
-    app.post('/', function (req, res) {
-        req.send('ikr');
-              
-       // data.push(req.body)
-    }
-    )
 
-//button.addEventListener('click', getFun)    
-
-
-const obj = { username: 'Flavio' };
-
-app.post('/', (req, res) => res.json(obj)
-);
-
-
-*/
 // Setup Server
 
 const port = 3000;
@@ -67,4 +50,38 @@ app.get('/add', function (req, res) {
 })
 
 */
+const data = [];
+
+app.post('/add', (req, res) => {
+
+    newEntry = {
+
+        temperature: req.body.temperature
+,
+
+        date: req.body.newDate,
+
+        feelings: req.body
+
+    }
+    
+
+    data.push(newEntry);
+
+    res.send(data);
+    console.log(data);
+
+
+});
+
+// GET 
+
+app.get('/all', (req, res) => {
+    
+    console.log(newEntry);
+    res.send(newEntry);
+
+});
+
+
 
